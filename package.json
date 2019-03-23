@@ -1,0 +1,25 @@
+{
+  "name": "image2eeg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "start-electron": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "electron-config": "^2.0.0",
+    "electron-packager": "^13.1.1",
+    "file-type": "^10.9.0",
+    "jquery": "^3.3.1",
+    "read-chunk": "^3.1.0",
+    "ws": "^6.2.0"
+  },
+  "devDependencies": {
+    "electron": "^4.1.1"
+  }
+}
