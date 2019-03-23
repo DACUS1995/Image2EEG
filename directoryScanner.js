@@ -5,20 +5,22 @@ const util = require('util');
 class DirectoryScanner 
 {
     constructor(){
-        this.path = ''
-        this.files = []
+        this.path = '';
+        this.files = [];
     }
 
-    startScanning(){
+    startScanning()
+    {
         this._interval = setInterval(() => this.scan(), 2000);
     }
 
-    scan(){
+    scan()
+    {
         //get visible files only
         this.files = fs.readdirSync(this.path)
             .filter(file => fs.statSync(path.join(this.path, file)).isFile() 
               && !(/(^|\/)\.[^\/\.]/g).test(file) )
-            .map(f => path.join(this.path, f))
+            .map(f => path.join(this.path, f));
     }
 }
 
