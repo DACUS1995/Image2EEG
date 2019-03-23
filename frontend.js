@@ -1,4 +1,4 @@
-const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron');
 const remote = require('electron').remote;
 
 const readChunk = require('read-chunk');
@@ -25,7 +25,7 @@ $(document).ready(() => {
 
 function updateSlideshow()
 {
-    ipcRenderer.once('list_files_reply', (event,arg)=>{
+    ipcRenderer.once('list_files_reply', (event, arg) => {
         index = (index + 1) % arg.length;
         showAsset(arg[index], () => this.updateSlideshow());
 
@@ -66,28 +66,24 @@ function isVideo(file)
     }
 }
 
-function showAsset(file, cb)
+function showAsset(strFilePath, cb, nIntervalMiliSec = 5000)
 {
-    const dom = $("#content");
+    const elDivContent = $("#content");
 
     let windowAspect = window.outerWidth / window.outerHeight;
-    dom.html("");
+    elDivContent.html("");
     
-    if(isImage(file))
+    if(isImage(strFilePath))
     {
-        console.log("Image", file);
+        console.log("Image", strFilePath);
 
         let elm = $("<img>");
         // elm.addClass("fill-image")
-        elm.attr("src",file);
+        elm.attr("src", strFilePath);
+        elDivContent.append(elm);
 
-        dom.append(elm);
-
-        setTimeout(cb, 15000);
+        setTimeout(cb, nIntervalMiliSec);
     }
-
-
-
     else if(isVideo(file))
     {
         console.log("video", file);

@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node main.js",
     "start-electron": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-osx": "electron-packager ./ Image2EEG --overwrite --platform=darwin --arch=x64 --out=build",
+    "build-linux": "electron-packager ./ Image2EEG --overwrite --platform=linux --arch=x64 --out=build",
+    "build-linux-arm": "electron-packager ./ Image2EEg --overwrite --platform=linux --arch=armv7l --out=build",
+    "build-win": "electron-packager ./ Image2EEG --overwrite --platform=win32 --arch=x64 --out=build"
   },
   "author": "",
   "license": "ISC",
