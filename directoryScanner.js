@@ -18,8 +18,10 @@ class DirectoryScanner
     {
         //get visible files only
         this.files = fs.readdirSync(this.path)
-            .filter(file => fs.statSync(path.join(this.path, file)).isFile() 
-              && !(/(^|\/)\.[^\/\.]/g).test(file) )
+            .filter(file => 
+                fs.statSync(path.join(this.path, file)).isFile() 
+                && !(/(^|\/)\.[^\/\.]/g).test(file)
+            )
             .map(f => path.join(this.path, f));
     }
 }

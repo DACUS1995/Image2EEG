@@ -14,22 +14,52 @@ let win
 class Main
 {
 	constructor()
-	{}
+	{
+        this.wsClient = null;
+    }
 
-	static async run()
+	async initConnection()
 	{
 		let wsHandler = null;
 
-		const wsClient = new WebSocketClient(process.env.WS_HOST, process.env.WS_PORT);
 		try
 		{
-			wsHandler = await wsClient.connect();
+            this.wsClient = new WebSocketClient(process.env.WS_HOST, process.env.WS_PORT);
+			wsHandler = await this.wsClient.connect();
 		}
 		catch(error)
 		{
 			console.error("Failed WS connection to CyKIT. Reasons: \n" + error.stack);
 		}
-	}
+    }
+
+    /**
+     * @param {string} strCSVFileName 
+     */
+    startEEGRecording(strCSVFileName)
+    {
+        if(typeof strCSVFileName !== "string")
+        {
+            throw new Error("The CSV file name in which to save the EEG signal must be a string.");
+        }
+
+        Main.getInstance().wsClient.sendData("CyKITv2:::RecordStart:::" + strCSVFileName); 
+    }
+
+    stopEEGRecording()
+    {
+        Main.getInstance().wsClient.sendData("CyKITv2:::RecordStop");
+    }
+    
+    static getInstance()
+    {
+        if(!Main.instance)
+        {
+            Main.instance = new Main();
+        }
+
+        return Main.instance;
+    }
 
 	static createWindow () 
 	{
@@ -42,7 +72,7 @@ class Main
 		win.loadURL(`file://${__dirname}/index.html`)
 	
 		// Open the DevTools.
-		//win.webContents.openDevTools()
+		win.webContents.openDevTools()
 	
 		const ret = electron.globalShortcut.register('Escape', () => {
 			console.log('Escape is pressed');
@@ -152,9 +182,19 @@ class Main
 	}
 }
 
-ipcMain.on('list_files', (event,arg) => {
+ipcMain.on('list_files', (event, arg) => {
     event.sender.send('list_files_reply', directoryScanner.files)
 })
+
+ipcMain.on("startRecording", (event, strCSVFileName) => {
+    Main.getInstance().startEEGRecording(strCSVFileName);
+    event.sender.send('confirm_startRecording');
+});
+
+ipcMain.on("stopRecording", (event, arg) => {
+    Main.getInstance().stopEEGRecording();
+    event.sender.send('confirm_stopEEGRecording');
+});
 
 app.on('folder_selected', () => {
     directoryScanner.path = config.get("path");
@@ -214,5 +254,5 @@ process.on(
 	}
 )
 
-// Main.run()
-// 	.catch(console.error)
+Main.getInstance()
+    .initConnection();
