@@ -6,7 +6,7 @@ const electron = require('electron');
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 const config = new (require('electron-config'))();
 
-const directoryScanner = require('./directoryScanner.js')
+const DirectoryScanner = require('./DirectoryScanner.js')
 const WebSocketClient = require("./WebSocketClient");
 
 let win
@@ -183,7 +183,7 @@ class Main
 }
 
 ipcMain.on('list_files', (event, arg) => {
-    event.sender.send('list_files_reply', directoryScanner.files)
+    event.sender.send('list_files_reply', DirectoryScanner.files)
 })
 
 ipcMain.on("startRecording", (event, strCSVFileName) => {
@@ -197,13 +197,13 @@ ipcMain.on("stopRecording", (event, arg) => {
 });
 
 app.on('folder_selected', () => {
-    directoryScanner.path = config.get("path");
-    directoryScanner.scan();
+    DirectoryScanner.path = config.get("path");
+    DirectoryScanner.scan();
 
 	if(!win)
 	{
         Main.createWindow();
-        directoryScanner.startScanning();
+        DirectoryScanner.startScanning();
     }
 })
 
@@ -221,9 +221,9 @@ app.on('ready', () => {
 	{
 		Main.selectFolder();
 		// Main.createWindow();
-		// directoryScanner.path = config.get("path");
-		// directoryScanner.scan();
-		// directoryScanner.startScanning();
+		// DirectoryScanner.path = config.get("path");
+		// DirectoryScanner.scan();
+		// DirectoryScanner.startScanning();
     }
 })
 
