@@ -168,8 +168,7 @@ class Slideshow
 		}
 		else 
 		{
-			// throw new Error(`Unsuported file type: ${this.getFileType(strFilePath)}`);
-			console.log(strFilePath, this.getFileType(strFilePath));
+			throw new Error(`Unsuported file type: ${Slideshow.getFileType(strFilePath)}`);
 			cb();
 		}
 	}
