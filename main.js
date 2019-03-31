@@ -69,10 +69,10 @@ class Main
 		win.setFullScreen(true);
 	
 		// and load the index.html of the app.
-		win.loadURL(`file://${__dirname}/index.html`)
+		win.loadURL(`file://${__dirname}/index.html`);
 	
 		// Open the DevTools.
-		win.webContents.openDevTools()
+		// win.webContents.openDevTools();
 	
 		const ret = electron.globalShortcut.register('Escape', () => {
 			console.log('Escape is pressed');

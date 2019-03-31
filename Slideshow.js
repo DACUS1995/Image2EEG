@@ -121,7 +121,7 @@ class Slideshow
 	{
 		if(this._bIsRecording === false)
 		{
-			const strFileName = strFilePath.split("\\").pop().split(".")[0] + ".csv";
+			const strFileName = strFilePath.split("\\").pop().split(".")[0];
 			console.log(`---> Started recording for file: [${strFileName}]`);
 			this.startEEGRecording(strFileName)
 		}
