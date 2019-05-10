@@ -15,8 +15,8 @@ class Main
 {
 	constructor()
 	{
-        this.wsClient = null;
-    }
+		this.wsClient = null;
+	}
 
 	async initConnection()
 	{
@@ -24,42 +24,42 @@ class Main
 
 		try
 		{
-            this.wsClient = new WebSocketClient(process.env.WS_HOST, process.env.WS_PORT);
+			this.wsClient = new WebSocketClient(process.env.WS_HOST, process.env.WS_PORT);
 			wsHandler = await this.wsClient.connect();
 		}
 		catch(error)
 		{
 			console.error("Failed WS connection to CyKIT. Reasons: \n" + error.stack);
 		}
-    }
+	}
 
-    /**
-     * @param {string} strCSVFileName 
-     */
-    startEEGRecording(strCSVFileName)
-    {
-        if(typeof strCSVFileName !== "string")
-        {
-            throw new Error("The CSV file name in which to save the EEG signal must be a string.");
-        }
+	/**
+	 * @param {string} strCSVFileName 
+	 */
+	startEEGRecording(strCSVFileName)
+	{
+		if(typeof strCSVFileName !== "string")
+		{
+			throw new Error("The CSV file name in which to save the EEG signal must be a string.");
+		}
 
-        Main.getInstance().wsClient.sendData("CyKITv2:::RecordStart:::" + strCSVFileName); 
-    }
+		Main.getInstance().wsClient.sendData("CyKITv2:::RecordStart:::" + strCSVFileName); 
+	}
 
-    stopEEGRecording()
-    {
-        Main.getInstance().wsClient.sendData("CyKITv2:::RecordStop");
-    }
-    
-    static getInstance()
-    {
-        if(!Main.instance)
-        {
-            Main.instance = new Main();
-        }
+	stopEEGRecording()
+	{
+		Main.getInstance().wsClient.sendData("CyKITv2:::RecordStop");
+	}
+	
+	static getInstance()
+	{
+		if(!Main.instance)
+		{
+			Main.instance = new Main();
+		}
 
-        return Main.instance;
-    }
+		return Main.instance;
+	}
 
 	static createWindow () 
 	{
@@ -183,28 +183,28 @@ class Main
 }
 
 ipcMain.on('list_files', (event, arg) => {
-    event.sender.send('list_files_reply', DirectoryScanner.files)
+	event.sender.send('list_files_reply', DirectoryScanner.files)
 })
 
 ipcMain.on("startRecording", (event, strCSVFileName) => {
-    Main.getInstance().startEEGRecording(strCSVFileName);
-    event.sender.send('confirm_startRecording');
+	Main.getInstance().startEEGRecording(strCSVFileName);
+	event.sender.send('confirm_startRecording');
 });
 
 ipcMain.on("stopRecording", (event, arg) => {
-    Main.getInstance().stopEEGRecording();
-    event.sender.send('confirm_stopEEGRecording');
+	Main.getInstance().stopEEGRecording();
+	event.sender.send('confirm_stopEEGRecording');
 });
 
 app.on('folder_selected', () => {
-    DirectoryScanner.path = config.get("path");
-    DirectoryScanner.scan();
+	DirectoryScanner.path = config.get("path");
+	DirectoryScanner.scan();
 
 	if(!win)
 	{
-        Main.createWindow();
-        DirectoryScanner.startScanning();
-    }
+		Main.createWindow();
+		DirectoryScanner.startScanning();
+	}
 })
 
 // This method will be called when Electron has finished
@@ -224,13 +224,13 @@ app.on('ready', () => {
 		// DirectoryScanner.path = config.get("path");
 		// DirectoryScanner.scan();
 		// DirectoryScanner.startScanning();
-    }
+	}
 })
 
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    app.quit()
+	app.quit()
 })
 
 
@@ -255,4 +255,4 @@ process.on(
 )
 
 Main.getInstance()
-    .initConnection();
+	.initConnection();
