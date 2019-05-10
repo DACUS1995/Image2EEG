@@ -121,7 +121,7 @@ class Slideshow
 	{
 		if(this._bIsRecording === false)
 		{
-			const strFileName = strFilePath.split("\\").pop().split(".")[0] + ".csv";
+			const strFileName = strFilePath.split("\\").pop().split(".")[0];
 			console.log(`---> Started recording for file: [${strFileName}]`);
 			this.startEEGRecording(strFileName)
 		}
@@ -168,8 +168,7 @@ class Slideshow
 		}
 		else 
 		{
-			// throw new Error(`Unsuported file type: ${this.getFileType(strFilePath)}`);
-			console.log(strFilePath, this.getFileType(strFilePath));
+			throw new Error(`Unsuported file type: ${Slideshow.getFileType(strFilePath)}`);
 			cb();
 		}
 	}
